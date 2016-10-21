@@ -16,10 +16,15 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
     
+    let resPerPage = 20
+    var currentOffset = 0
+    var moreAvailable = true
+    
     var dataDict = [String: [GBGame]]()
     var sections = [String]()
     var selectedGame = GBGame()
-    var selectedDate = Date()
+    var dateString: String = ""
+    var endDateString: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,9 +34,9 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
         self.tableView.delegate = self
         self.tableView.dataSource = self
         
-        let todayString = moment().format("YYYY-MM-dd")
-        let endDateString = moment().add(1, .Months).format("YYYY-MM-dd")
-        getData(from: todayString, to: endDateString)
+        dateString = moment().format("YYYY-MM-dd")
+        endDateString = moment().add(1, .Months).format("YYYY-MM-dd")
+        getData(from: dateString, to: endDateString)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -97,6 +102,14 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
         performSegue(withIdentifier: "detailSegue", sender: self)
     }
     
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let bottomEdge = scrollView.contentOffset.y + scrollView.frame.size.height
+        if bottomEdge >= scrollView.contentSize.height {
+            getData(from: dateString, to: endDateString, getMore: true)
+        }
+    }
+    
+    // MARK: - Segues
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "detailSegue" {
             let vc = segue.destination as! DetailViewController
@@ -104,33 +117,46 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
         else if segue.identifier == "filterSegue" {
             let vc = segue.destination as! FilterViewController
-            vc.date = selectedDate
+            vc.date = moment(dateString)!.date
             vc.delegate = self
         }
     }
     
     // Mark: - Actions
     func headerBtnAction(sender: UIButton) {
-        if let dateString = sender.titleLabel?.text {
-            let date = moment(dateString)!.date
-            selectedDate = date
+        if let date = sender.titleLabel?.text {
+            dateString = date
         }
         performSegue(withIdentifier: "filterSegue", sender: self)
     }
 
     // MARK: - Filter View Controller Delegate
     func setFilterDate(date: Date) {
+        moreAvailable = true
         let dateString = moment(date).format("YYYY-MM-dd")
         let endDateString = moment(date).add(2, .Years).format("YYYY-MM-dd")
         getData(from: dateString, to: endDateString)
     }
     
     // Mark: - API requests
-    func getData(from dateString: String, to endDateString: String) {
-        GiantBombAPI.games(date: dateString, endDate: endDateString) { (results) in
-            if let data = results {
+    func getData(from dateString: String, to endDateString: String, getMore: Bool = false) {
+        // Only get more results if there are results available
+        if moreAvailable {
+            if getMore {
+                self.currentOffset += self.resPerPage
+            }
+            else {
                 self.dataDict.removeAll()
                 self.sections.removeAll()
+                self.currentOffset = 0
+            }
+            
+            GiantBombAPI.games(date: dateString, endDate: endDateString, limit: resPerPage, offset: currentOffset) { (results) in
+                guard let data = results, data.count > 0 else {
+                    self.moreAvailable = false
+                    return
+                }
+                
                 for res in data {
                     if let date = res.date {
                         

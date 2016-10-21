@@ -39,10 +39,12 @@ struct GiantBombAPI {
         }
     }
     
-    static func games(date: String, endDate: String? = nil, complete: @escaping ([GBGame]?) -> ()) {
+    static func games(date: String, endDate: String? = nil, limit: Int, offset: Int, complete: @escaping ([GBGame]?) -> ()) {
         var params = [String: String]()
         params["sort"] = "original_release_date:asc"
         params["filter"] = endDate == nil ? "original_release_date:\(date)" : "original_release_date:\(date)|\(endDate!)"
+        params["limit"] = String(limit)
+        params["offset"] = String(offset)
         
         request(endpoint: .games, params: params) { (data) in
             complete(data)
