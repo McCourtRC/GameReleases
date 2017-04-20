@@ -64,12 +64,6 @@ struct GiantBombAPI {
                 complete(nil)
                 return
             }
-            
-            print()
-            print()
-            print(response.request)
-            print()
-            print()
 
             var data = [GBGame]()
             let json = JSON(resp)

@@ -10,6 +10,7 @@
 		045BFB401DAF303300E69A40 /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045BFB3F1DAF303200E69A40 /* FilterViewController.swift */; };
 		045BFB421DAF305C00E69A40 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045BFB411DAF305C00E69A40 /* DetailViewController.swift */; };
 		045BFB441DB071F200E69A40 /* GiantBombAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 045BFB431DB071F200E69A40 /* GiantBombAPI.swift */; };
+		04AD0E541EA8905900C53768 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04AD0E531EA8905800C53768 /* Utilities.swift */; };
 		04E0A5141D94839900562330 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E0A5131D94839900562330 /* AppDelegate.swift */; };
 		04E0A5161D94839900562330 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E0A5151D94839900562330 /* SearchViewController.swift */; };
 		04E0A5191D94839900562330 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 04E0A5171D94839900562330 /* Main.storyboard */; };
@@ -22,6 +23,7 @@
 		045BFB3F1DAF303200E69A40 /* FilterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
 		045BFB411DAF305C00E69A40 /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		045BFB431DB071F200E69A40 /* GiantBombAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GiantBombAPI.swift; sourceTree = "<group>"; };
+		04AD0E531EA8905800C53768 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		04E0A5101D94839900562330 /* GameReleases.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GameReleases.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		04E0A5131D94839900562330 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		04E0A5151D94839900562330 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
@@ -69,6 +71,7 @@
 			children = (
 				04E0A5131D94839900562330 /* AppDelegate.swift */,
 				04E0A5151D94839900562330 /* SearchViewController.swift */,
+				04AD0E531EA8905800C53768 /* Utilities.swift */,
 				045BFB3F1DAF303200E69A40 /* FilterViewController.swift */,
 				045BFB411DAF305C00E69A40 /* DetailViewController.swift */,
 				045BFB431DB071F200E69A40 /* GiantBombAPI.swift */,
@@ -127,11 +130,12 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0800;
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = "Corey McCourt";
 				TargetAttributes = {
 					04E0A50F1D94839900562330 = {
 						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = NT8AA46E58;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -220,6 +224,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04AD0E541EA8905900C53768 /* Utilities.swift in Sources */,
 				045BFB401DAF303300E69A40 /* FilterViewController.swift in Sources */,
 				04E0A5161D94839900562330 /* SearchViewController.swift in Sources */,
 				04E0A5141D94839900562330 /* AppDelegate.swift in Sources */,
@@ -351,6 +356,8 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = NT8AA46E58;
 				INFOPLIST_FILE = GameReleases/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.coreymccourt.GameReleases;
@@ -365,6 +372,8 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = NT8AA46E58;
 				INFOPLIST_FILE = GameReleases/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.coreymccourt.GameReleases;

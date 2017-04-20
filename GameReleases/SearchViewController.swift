@@ -68,8 +68,9 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
         
         if (game.thumbUrl != nil), let imageView = cell.viewWithTag(200) as? UIImageView, let url = game.thumbUrl {
-            let data = NSData(contentsOf: url as URL)
-            imageView.image = UIImage(data: data as! Data)
+//            let data = NSData(contentsOf: url as URL)
+//            imageView.image = UIImage(data: data as! Data)
+            imageView.imageFromServerURL(urlString: url.absoluteString!)
         }
         
         if (game.date != nil), let dateLabel = cell.viewWithTag(300) as? UILabel {
@@ -141,37 +142,41 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     // Mark: - API requests
     func getData(from dateString: String, to endDateString: String, getMore: Bool = false) {
         // Only get more results if there are results available
-        if moreAvailable {
-            if getMore {
-                self.currentOffset += self.resPerPage
-            }
-            else {
-                self.dataDict.removeAll()
-                self.sections.removeAll()
-                self.currentOffset = 0
+        
+        guard moreAvailable else {
+            print("No more available data")
+            return
+        }
+        
+        if getMore {
+            self.currentOffset += self.resPerPage
+        }
+        else {
+            self.dataDict.removeAll()
+            self.sections.removeAll()
+            self.currentOffset = 0
+        }
+        
+        GiantBombAPI.games(date: dateString, endDate: endDateString, limit: resPerPage, offset: currentOffset) { (results) in
+            guard let data = results, data.count > 0 else {
+                self.moreAvailable = false
+                return
             }
             
-            GiantBombAPI.games(date: dateString, endDate: endDateString, limit: resPerPage, offset: currentOffset) { (results) in
-                guard let data = results, data.count > 0 else {
-                    self.moreAvailable = false
-                    return
-                }
-                
-                for res in data {
-                    if let date = res.date {
-                        
-                        // Add new date
-                        if !self.sections.contains(date) {
-                            self.sections.append(date)
-                            self.dataDict[date] = [GBGame]()
-                        }
-                        
-                        // Add data
-                        self.dataDict[date]!.append(res)
+            for res in data {
+                if let date = res.date {
+                    
+                    // Add new date
+                    if !self.sections.contains(date) {
+                        self.sections.append(date)
+                        self.dataDict[date] = [GBGame]()
                     }
+                    
+                    // Add data
+                    self.dataDict[date]!.append(res)
                 }
-                self.tableView.reloadData()
             }
+            self.tableView.reloadData()
         }
     }
 }
