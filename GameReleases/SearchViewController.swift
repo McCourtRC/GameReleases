@@ -20,6 +20,8 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var currentOffset = 0
     var moreAvailable = true
     
+    var searchActive = false
+    
     var dataDict = [String: [GBGame]]()
     var sections = [String]()
     var selectedGame = GBGame()
@@ -47,6 +49,41 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
         self.navigationController?.isNavigationBarHidden = false
     }
     
+    // MARK: - Search Bar
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let query = searchBar.text else {
+            return
+        }
+        
+        GiantBombAPI.search(query: query) { (results) in
+            guard let data = results else {
+                //TODO:  Alert to show no results found
+                print("No results")
+                return
+            }
+            
+            self.dataDict.removeAll()
+            self.sections.removeAll()
+            
+            for res in data {
+                if let date = res.date {
+                    
+                    // Add new date
+                    if !self.sections.contains(date) {
+                        self.sections.append(date)
+                        self.dataDict[date] = [GBGame]()
+                    }
+                    
+                    // Add data
+                    self.dataDict[date]!.append(res)
+                }
+            }
+            
+            self.tableView.reloadData()
+            self.tableView.setContentOffset(.zero, animated: false)
+        }
+    }
+    
     // MARK: - Table View
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return dataDict[sections[section]]!.count
@@ -68,8 +105,6 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
         }
         
         if (game.thumbUrl != nil), let imageView = cell.viewWithTag(200) as? UIImageView, let url = game.thumbUrl {
-//            let data = NSData(contentsOf: url as URL)
-//            imageView.image = UIImage(data: data as! Data)
             imageView.imageFromServerURL(urlString: url.absoluteString!)
         }
         

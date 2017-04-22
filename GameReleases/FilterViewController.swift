@@ -28,14 +28,9 @@ class FilterViewController: UIViewController {
         datePicker.setDate(date, animated: true)
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        delegate?.setFilterDate(date: datePicker.date)
-    }
-    
     // MARK: - Actions
     func searchBtnAction() {
+        delegate?.setFilterDate(date: datePicker.date)
         self.navigationController?.popViewController(animated: true)
     }
 }

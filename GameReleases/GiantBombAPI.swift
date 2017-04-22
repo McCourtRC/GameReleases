@@ -27,6 +27,7 @@ struct GiantBombAPI {
     
     enum Endpoint: String {
         case games = "/games/"
+        case search = "/search/"
     }
     
     // MARK: - Games Endpoint
@@ -47,6 +48,16 @@ struct GiantBombAPI {
         params["offset"] = String(offset)
         
         request(endpoint: .games, params: params) { (data) in
+            complete(data)
+        }
+    }
+    
+    // MARK: - Search Endpoint
+    static func search(query: String, complete: @escaping ([GBGame]?) -> ()) {
+        var params = [String: String]()
+        params["query"] = query
+        
+        request(endpoint: .search, params: params) { (data) in
             complete(data)
         }
     }
