@@ -20,8 +20,6 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
     var currentOffset = 0
     var moreAvailable = true
     
-    var searchActive = false
-    
     var dataDict = [String: [GBGame]]()
     var sections = [String]()
     var selectedGame = GBGame()
