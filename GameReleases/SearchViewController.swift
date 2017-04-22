@@ -177,6 +177,7 @@ class SearchViewController: UIViewController, UITableViewDelegate, UITableViewDa
                 }
             }
             self.tableView.reloadData()
+            self.tableView.setContentOffset(.zero, animated: false)
         }
     }
 }
